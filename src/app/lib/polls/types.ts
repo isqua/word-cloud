@@ -7,3 +7,13 @@ export type IPoll = {
 }
 
 export type IPollResults = Map<Word, number>;
+
+export type CreatePollDto = {
+    title: string;
+    initial: Word[];
+}
+
+export type ReadPollDto = {
+    id: PollId;
+    title: string;
+}
