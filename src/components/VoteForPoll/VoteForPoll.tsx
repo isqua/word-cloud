@@ -1,42 +1,46 @@
-import { voteForPoll } from '@/api/polls';
-import { PollId } from '@/app/lib/polls/types';
-import { Button } from '@/components/Button';
-import { InputField } from '@/components/Input';
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { WithPoll } from '../WithPoll';
+import { voteForPoll } from "@/api/polls";
+import { PollId } from "@/app/lib/polls/types";
+import { Button } from "@/components/Button";
+import { InputField } from "@/components/Input";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { WithPoll } from "../WithPoll";
 
 const MAX_INPUTS = 10;
 
 type IVoteForPollProps = {
     pollId: PollId;
-}
+};
 
 export function VoteForPoll({ pollId }: IVoteForPollProps) {
-    const [words, setWords] = useState<string[]>(['']);
-    const [error, setError] = useState<string>('');
+    const [words, setWords] = useState<string[]>([""]);
+    const [error, setError] = useState<string>("");
     const [isSuccess, setSuccess] = useState<boolean>(false);
 
-    const handleChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
-        const newWords = [...words];
+    const handleChange =
+        (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+            const newWords = [...words];
 
-        newWords[index] = event.target.value;
-        setWords(newWords);
-
-        const shouldAddNewInput = index === words.length - 1 && words.length < MAX_INPUTS && event.target.value !== '';
-
-        if (shouldAddNewInput) {
-            setWords([...newWords, '']);
-        } else {
+            newWords[index] = event.target.value;
             setWords(newWords);
-        }
-    };
+
+            const shouldAddNewInput =
+                index === words.length - 1 &&
+                words.length < MAX_INPUTS &&
+                event.target.value !== "";
+
+            if (shouldAddNewInput) {
+                setWords([...newWords, ""]);
+            } else {
+                setWords(newWords);
+            }
+        };
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const answers = words.filter(word => word.trim() !== '');
+        const answers = words.filter((word) => word.trim() !== "");
 
         if (answers.length === 0) {
-            setError('Please enter at least one word');
+            setError("Please enter at least one word");
             return;
         }
 
@@ -44,8 +48,8 @@ export function VoteForPoll({ pollId }: IVoteForPollProps) {
             await voteForPoll(pollId, { answers });
             setSuccess(true);
         } catch (err) {
-            console.error(err)
-            setError('Vote failed');
+            console.error(err);
+            setError("Vote failed");
         }
     };
 
@@ -62,7 +66,9 @@ export function VoteForPoll({ pollId }: IVoteForPollProps) {
             {(poll) => (
                 <div className="min-h-screen flex items-center justify-center">
                     <div className="p-8 w-full max-w-md">
-                        <h1 className="text-2xl font-bold mb-6 text-center">{poll.title}</h1>
+                        <h1 className="text-2xl font-bold mb-6 text-center">
+                            {poll.title}
+                        </h1>
                         <form onSubmit={handleSubmit} className="space-y-4">
                             {words.map((word, index) => (
                                 <div key={index}>
@@ -74,7 +80,9 @@ export function VoteForPoll({ pollId }: IVoteForPollProps) {
                                     />
                                 </div>
                             ))}
-                            {error && (<p className="text-xl text-red-500">{error}</p>)}
+                            {error && (
+                                <p className="text-xl text-red-500">{error}</p>
+                            )}
                             <Button type="submit">Submit</Button>
                         </form>
                     </div>

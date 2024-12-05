@@ -1,25 +1,33 @@
-import { nanoid } from 'nanoid';
-import { EntityLimitException, NotFoundException } from '../errors';
-import { PollsRepository } from './repository';
-import type { CreatePollDto, IPoll, IPollResultItem, IPollResults, PollId, ReadPollDto, Word } from './types';
+import { nanoid } from "nanoid";
+import { EntityLimitException, NotFoundException } from "../errors";
+import { PollsRepository } from "./repository";
+import type {
+    CreatePollDto,
+    IPoll,
+    IPollResultItem,
+    IPollResults,
+    PollId,
+    ReadPollDto,
+    Word,
+} from "./types";
 
 export class PollsService {
     constructor(
         protected maxPollsCount: number,
         protected repository: PollsRepository,
-    ) { }
+    ) {}
 
     create({ title, initial }: CreatePollDto): ReadPollDto {
         if (this.repository.count() >= this.maxPollsCount) {
             throw new EntityLimitException(
-                `Cannot create more than ${this.maxPollsCount} polls. Please wait for some of them to complete`
+                `Cannot create more than ${this.maxPollsCount} polls. Please wait for some of them to complete`,
             );
         }
 
         const poll: IPoll = {
             title,
             results: new Map(),
-        }
+        };
 
         for (const word of initial) {
             poll.results.set(word, 1);
@@ -68,7 +76,7 @@ export class PollsService {
         const uniqueWords = new Set<Word>();
 
         for (const word of words) {
-            uniqueWords.add(word.toLowerCase().trim().replace(/\s+/, ''))
+            uniqueWords.add(word.toLowerCase().trim().replace(/\s+/, ""));
         }
 
         return uniqueWords;

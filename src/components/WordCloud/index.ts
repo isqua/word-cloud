@@ -1,1 +1,1 @@
-export * from './WordCloud';
+export * from "./WordCloud";

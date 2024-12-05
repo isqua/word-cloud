@@ -1,12 +1,12 @@
-import { EntityLimitException, UnexpectedException } from '@/app/lib/errors';
-import { service } from '@/app/lib/polls';
-import { CreatePollDtoSchema } from '@/app/lib/polls/schemas';
-import { NextRequest, NextResponse } from 'next/server';
-import { ZodError } from 'zod';
+import { EntityLimitException, UnexpectedException } from "@/app/lib/errors";
+import { service } from "@/app/lib/polls";
+import { CreatePollDtoSchema } from "@/app/lib/polls/schemas";
+import { NextRequest, NextResponse } from "next/server";
+import { ZodError } from "zod";
 
 export async function POST(req: NextRequest) {
     try {
-        const body = await req.json()
+        const body = await req.json();
         const validatedData = CreatePollDtoSchema.parse(body);
         const { title, initial } = validatedData;
 

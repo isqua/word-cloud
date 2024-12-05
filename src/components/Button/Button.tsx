@@ -1,7 +1,8 @@
-import React, { ButtonHTMLAttributes } from 'react';
+import React, { ButtonHTMLAttributes } from "react";
 
-interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'className'> {
-    type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
+interface ButtonProps
+    extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
+    type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
     children: React.ReactNode;
 }
 

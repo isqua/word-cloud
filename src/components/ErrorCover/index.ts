@@ -1,1 +1,1 @@
-export * from './ErrorCover';
+export * from "./ErrorCover";

@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import { CreatePollDto } from '../types';
+import { z } from "zod";
+import { CreatePollDto } from "../types";
 
 export const CreatePollDtoSchema = z.object({
     title: z.string(),

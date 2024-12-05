@@ -1,5 +1,5 @@
-import { ConflictException, NotFoundException } from '../errors';
-import type { IPoll, PollId, Word } from './types';
+import { ConflictException, NotFoundException } from "../errors";
+import type { IPoll, PollId, Word } from "./types";
 
 export class PollsRepository {
     protected polls = new Map<string, IPoll>();
@@ -10,7 +10,7 @@ export class PollsRepository {
 
     add(pollId: string, poll: IPoll): PollId {
         if (this.polls.has(pollId)) {
-            throw new ConflictException('Cannot use the same poll id');
+            throw new ConflictException("Cannot use the same poll id");
         }
 
         this.polls.set(pollId, poll);
@@ -35,7 +35,7 @@ export class PollsRepository {
             throw new NotFoundException(`The poll with id ${pollId} not found`);
         }
 
-        words.forEach(word => {
+        words.forEach((word) => {
             const count = poll.results.get(word) || 0;
             poll.results.set(word, count + 1);
         });

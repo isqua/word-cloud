@@ -1,6 +1,6 @@
-import { MAX_POLLS_COUNT } from '@/app/lib/config';
-import { PollsRepository } from '@/app/lib/polls/repository';
-import { PollsService } from '@/app/lib/polls/service';
+import { MAX_POLLS_COUNT } from "@/app/lib/config";
+import { PollsRepository } from "@/app/lib/polls/repository";
+import { PollsService } from "@/app/lib/polls/service";
 
 const repository = new PollsRepository();
 

@@ -1,2 +1,1 @@
-export * from './WithPoll';
-
+export * from "./WithPoll";

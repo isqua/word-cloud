@@ -1,1 +1,1 @@
-export * from './VoteForPoll';
+export * from "./VoteForPoll";

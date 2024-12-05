@@ -1,4 +1,4 @@
-import { AppException } from './app';
+import { AppException } from "./app";
 
 export class EntityLimitException extends AppException {
     constructor(message: string) {
