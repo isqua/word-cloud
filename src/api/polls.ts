@@ -1,4 +1,4 @@
-import type { CreatePollDto, ReadPollDto } from "@/app/lib/polls/types";
+import type { CreatePollDto, ReadPollDto, VoteForPollDto } from "@/app/lib/polls/types";
 
 export async function createPoll(poll: CreatePollDto): Promise<ReadPollDto> {
     const response = await fetch('/api/polls', {
@@ -27,5 +27,19 @@ export async function findPollById(pollId: string): Promise<ReadPollDto> {
         return data;
     } else {
         throw new Error('Failed to fetch poll');
+    }
+}
+
+export async function voteForPoll(pollId: string, data: VoteForPollDto): Promise<void> {
+    const response = await fetch(`/api/polls/${pollId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to vote for poll');
     }
 }
