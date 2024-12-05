@@ -1,17 +1,16 @@
 import { voteForPoll } from "@/api/polls";
-import { PollId } from "@/app/lib/polls/types";
+import { ReadPollDto } from "@/app/lib/polls/types";
 import { Button } from "@/components/Button";
 import { InputField } from "@/components/Input";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { WithPoll } from "../WithPoll";
 
 const MAX_INPUTS = 10;
 
 type IVoteForPollProps = {
-    pollId: PollId;
+    poll: ReadPollDto;
 };
 
-export function VoteForPoll({ pollId }: IVoteForPollProps) {
+export function VoteForPoll({ poll }: IVoteForPollProps) {
     const [words, setWords] = useState<string[]>([""]);
     const [error, setError] = useState<string>("");
     const [isSuccess, setSuccess] = useState<boolean>(false);
@@ -45,7 +44,7 @@ export function VoteForPoll({ pollId }: IVoteForPollProps) {
         }
 
         try {
-            await voteForPoll(pollId, { answers });
+            await voteForPoll(poll.id, { answers });
             setSuccess(true);
         } catch (err) {
             console.error(err);
@@ -62,32 +61,26 @@ export function VoteForPoll({ pollId }: IVoteForPollProps) {
     }
 
     return (
-        <WithPoll pollId={pollId}>
-            {(poll) => (
-                <div className="min-h-screen flex items-center justify-center">
-                    <div className="p-8 w-full max-w-md">
-                        <h1 className="text-2xl font-bold mb-6 text-center">
-                            {poll.title}
-                        </h1>
-                        <form onSubmit={handleSubmit} className="space-y-4">
-                            {words.map((word, index) => (
-                                <div key={index}>
-                                    <InputField
-                                        value={word}
-                                        onChange={handleChange(index)}
-                                        placeholder={`Enter word ${index + 1}`}
-                                        autoFocus={index === 0}
-                                    />
-                                </div>
-                            ))}
-                            {error && (
-                                <p className="text-xl text-red-500">{error}</p>
-                            )}
-                            <Button type="submit">Submit</Button>
-                        </form>
-                    </div>
-                </div>
-            )}
-        </WithPoll>
+        <div className="min-h-screen flex items-center justify-center">
+            <div className="p-8 w-full max-w-md">
+                <h1 className="text-2xl font-bold mb-6 text-center">
+                    {poll.title}
+                </h1>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    {words.map((word, index) => (
+                        <div key={index}>
+                            <InputField
+                                value={word}
+                                onChange={handleChange(index)}
+                                placeholder={`Enter word ${index + 1}`}
+                                autoFocus={index === 0}
+                            />
+                        </div>
+                    ))}
+                    {error && <p className="text-xl text-red-500">{error}</p>}
+                    <Button type="submit">Submit</Button>
+                </form>
+            </div>
+        </div>
     );
 }
