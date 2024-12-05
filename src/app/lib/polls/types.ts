@@ -24,3 +24,16 @@ export type ReadPollDto = {
 export type VoteForPollDto = {
     answers: Word[];
 };
+
+export type PollSubscribedEvent = {
+    message: string;
+};
+
+export type PollResultsUpdatedEvent = {
+    results: Array<IPollResultItem>;
+};
+
+export type PollSubscriptionEvents = {
+    subscribed: PollSubscribedEvent;
+    results: PollResultsUpdatedEvent;
+};

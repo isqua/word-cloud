@@ -1,3 +1,4 @@
+import { EventEmitter } from "events";
 import { nanoid } from "nanoid";
 import { EntityLimitException, NotFoundException } from "../errors";
 import { PollsRepository } from "./repository";
@@ -15,6 +16,7 @@ export class PollsService {
     constructor(
         protected maxPollsCount: number,
         protected repository: PollsRepository,
+        protected bus: EventEmitter,
     ) {}
 
     create({ title, initial }: CreatePollDto): ReadPollDto {
@@ -64,6 +66,7 @@ export class PollsService {
 
     addAnswers(pollId: string, words: Word[]): void {
         this.repository.incrementWordCounts(pollId, this.normalizeWords(words));
+        this.bus.emit(pollId, this.findById(pollId));
     }
 
     private formatResults(results: IPollResults): IPollResultItem[] {

@@ -1,7 +1,8 @@
+import { EventEmitter } from "events";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { EntityLimitException, NotFoundException } from "../errors";
-import { PollsService } from "./service";
 import { PollsRepository } from "./repository";
+import { PollsService } from "./service";
 import type { CreatePollDto } from "./types";
 
 let nanoIdCounter = 0;
@@ -16,7 +17,11 @@ describe("PollsService", () => {
 
     beforeEach(() => {
         repository = new PollsRepository();
-        service = new PollsService(maxPollsCount, repository);
+        service = new PollsService(
+            maxPollsCount,
+            repository,
+            new EventEmitter(),
+        );
         nanoIdCounter = 0;
     });
 
