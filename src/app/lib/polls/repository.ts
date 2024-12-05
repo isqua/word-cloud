@@ -1,5 +1,5 @@
-import { ConflictException } from '../errors';
-import type { IPoll, PollId } from './types';
+import { ConflictException, NotFoundException } from '../errors';
+import type { IPoll, PollId, Word } from './types';
 
 export class PollsRepository {
     protected polls = new Map<string, IPoll>();
@@ -26,5 +26,18 @@ export class PollsRepository {
         if (this.polls.has(pollId)) {
             this.polls.delete(pollId);
         }
+    }
+
+    incrementWordCounts(pollId: string, words: Set<Word>): void {
+        const poll = this.polls.get(pollId);
+
+        if (!poll) {
+            throw new NotFoundException(`The poll with id ${pollId} not found`);
+        }
+
+        words.forEach(word => {
+            const count = poll.results.get(word) || 0;
+            poll.results.set(word, count + 1);
+        });
     }
 }
