@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
         const poll = service.create({ title, initial });
 
-        return Response.json(poll);
+        return NextResponse.json(poll);
     } catch (e) {
         if (e instanceof ZodError) {
             return NextResponse.json({ error: e.errors }, { status: 400 });
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
         } else {
             const err = new UnexpectedException();
 
-            return Response.json({ error: err.message }, { status: 500 });
+            return NextResponse.json({ error: err.message }, { status: 500 });
         }
     }
 }
