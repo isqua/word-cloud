@@ -3,6 +3,7 @@ import { PollId } from '@/app/lib/polls/types';
 import { Button } from '@/components/Button';
 import { InputField } from '@/components/Input';
 import { ChangeEvent, FormEvent, useState } from 'react';
+import { WithPoll } from '../WithPoll';
 
 const MAX_INPUTS = 10;
 
@@ -57,24 +58,28 @@ export function VoteForPoll({ pollId }: IVoteForPollProps) {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center">
-            <div className="p-8 w-full max-w-md">
-                <h1 className="text-2xl font-bold mb-6 text-center">Add Words</h1>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    {words.map((word, index) => (
-                        <div key={index}>
-                            <InputField
-                                value={word}
-                                onChange={handleChange(index)}
-                                placeholder={`Enter word ${index + 1}`}
-                                autoFocus={index === 0}
-                            />
-                        </div>
-                    ))}
-                    {error && (<p className="text-xl text-red-500">{error}</p>)}
-                    <Button type="submit">Submit</Button>
-                </form>
-            </div>
-        </div>
+        <WithPoll pollId={pollId}>
+            {(poll) => (
+                <div className="min-h-screen flex items-center justify-center">
+                    <div className="p-8 w-full max-w-md">
+                        <h1 className="text-2xl font-bold mb-6 text-center">{poll.title}</h1>
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            {words.map((word, index) => (
+                                <div key={index}>
+                                    <InputField
+                                        value={word}
+                                        onChange={handleChange(index)}
+                                        placeholder={`Enter word ${index + 1}`}
+                                        autoFocus={index === 0}
+                                    />
+                                </div>
+                            ))}
+                            {error && (<p className="text-xl text-red-500">{error}</p>)}
+                            <Button type="submit">Submit</Button>
+                        </form>
+                    </div>
+                </div>
+            )}
+        </WithPoll>
     );
 }
