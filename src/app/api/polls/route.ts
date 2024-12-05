@@ -1,8 +1,7 @@
-import { EntityLimitException, UnexpectedException } from "@/app/lib/errors";
 import { service } from "@/app/lib/polls";
 import { CreatePollDtoSchema } from "@/app/lib/polls/schemas";
+import { sendErrorResponse } from "@/app/lib/shared/errorResponse";
 import { NextRequest, NextResponse } from "next/server";
-import { ZodError } from "zod";
 
 export async function POST(req: NextRequest) {
     try {
@@ -13,15 +12,7 @@ export async function POST(req: NextRequest) {
         const poll = service.create({ title, initial });
 
         return NextResponse.json(poll);
-    } catch (e) {
-        if (e instanceof ZodError) {
-            return NextResponse.json({ error: e.errors }, { status: 400 });
-        } else if (e instanceof EntityLimitException) {
-            return NextResponse.json({ error: e.message }, { status: 400 });
-        } else {
-            const err = new UnexpectedException();
-
-            return NextResponse.json({ error: err.message }, { status: 500 });
-        }
+    } catch (error) {
+        return sendErrorResponse(error);
     }
 }
